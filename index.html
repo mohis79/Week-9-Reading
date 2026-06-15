@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Room 5 Week 9 Reading Taskboard</title>
+  <style>
+    :root{
+      --ink:#172033; --muted:#56637a; --bg:#f5f7fb; --card:#ffffff; --line:#dbe3f0;
+      --blue:#2563eb; --teal:#0f766e; --purple:#7c3aed; --pink:#db2777; --orange:#ea580c; --green:#16a34a; --gold:#f59e0b;
+      --shadow:0 16px 40px rgba(23,32,51,.13); --radius:24px;
+    }
+    *{box-sizing:border-box} html{scroll-behavior:smooth}
+    body{margin:0;font-family:Inter,Arial,Helvetica,sans-serif;color:var(--ink);background:
+      radial-gradient(circle at top left, rgba(37,99,235,.22), transparent 30%),
+      radial-gradient(circle at 80% 10%, rgba(219,39,119,.16), transparent 26%),
+      linear-gradient(180deg,#ecfeff 0%,#f8fafc 45%,#fff7ed 100%);}
+    header{padding:34px 18px 22px;text-align:center;position:relative;overflow:hidden}
+    .badge{display:inline-flex;gap:8px;align-items:center;padding:8px 14px;border-radius:999px;background:#111827;color:white;font-weight:800;font-size:.9rem;box-shadow:var(--shadow)}
+    h1{font-size:clamp(2rem,5vw,4.1rem);line-height:1;margin:18px 0 12px;letter-spacing:-2px}
+    .sub{font-size:clamp(1rem,2vw,1.25rem);color:var(--muted);max-width:920px;margin:0 auto;line-height:1.55}
+    .top-actions{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-top:22px}
+    a.btn, button.btn{border:0;text-decoration:none;cursor:pointer;color:white;font-weight:900;border-radius:18px;padding:13px 18px;display:inline-flex;gap:9px;align-items:center;box-shadow:0 10px 25px rgba(0,0,0,.15);font-size:1rem}
+    .b-blue{background:linear-gradient(135deg,#2563eb,#06b6d4)} .b-purple{background:linear-gradient(135deg,#7c3aed,#db2777)} .b-green{background:linear-gradient(135deg,#0f766e,#16a34a)} .b-orange{background:linear-gradient(135deg,#ea580c,#f59e0b)} .b-dark{background:#172033}
+    main{width:min(1180px,94vw);margin:0 auto 60px}
+    .panel{background:rgba(255,255,255,.82);backdrop-filter:blur(10px);border:1px solid rgba(219,227,240,.9);border-radius:var(--radius);box-shadow:var(--shadow);padding:22px;margin:20px 0}
+    .grid{display:grid;gap:18px}.two{grid-template-columns:repeat(2,minmax(0,1fr))}.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    @media(max-width:850px){.two,.three{grid-template-columns:1fr}.taskboard{font-size:.78rem}.taskboard th,.taskboard td{padding:9px 5px}}
+    h2{font-size:1.8rem;margin:0 0 14px} h3{font-size:1.22rem;margin:0 0 10px}.small{font-size:.92rem;color:var(--muted);line-height:1.45}
+    .notice{border-left:8px solid var(--gold);background:#fffbeb;border-radius:18px;padding:16px 18px;font-weight:700;line-height:1.5}
+    .group-card{position:relative;overflow:hidden;border-radius:24px;background:#fff;border:1px solid var(--line);box-shadow:0 12px 30px rgba(23,32,51,.08)}
+    .group-head{padding:18px;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:12px}.g1{background:linear-gradient(135deg,#64748b,#0f172a)}.g2{background:linear-gradient(135deg,#2563eb,#06b6d4)}.g3{background:linear-gradient(135deg,#16a34a,#0f766e)}.g4{background:linear-gradient(135deg,#f59e0b,#ea580c)}.g5{background:linear-gradient(135deg,#7c3aed,#db2777)}
+    .pill{background:rgba(255,255,255,.22);padding:7px 10px;border-radius:999px;font-weight:900;white-space:nowrap}.group-body{padding:18px}.names{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 14px}.name{background:#f1f5f9;border:1px solid #dbe3f0;padding:6px 10px;border-radius:999px;font-weight:800;font-size:.9rem}
+    .task{border:1px solid var(--line);border-radius:18px;padding:14px;margin:12px 0;background:#f8fafc}.task strong{display:block;margin-bottom:5px}.task ul{margin:8px 0 0 18px;padding:0;line-height:1.55}.links{display:flex;flex-wrap:wrap;gap:10px;margin-top:12px}.linkchip{background:#e0f2fe;color:#075985;text-decoration:none;border:1px solid #bae6fd;border-radius:14px;padding:9px 11px;font-weight:900}.linkchip:hover{filter:brightness(.96);transform:translateY(-1px)}
+    .readbar{display:flex;gap:8px;flex-wrap:wrap;margin:12px 0}.mini{border:0;border-radius:999px;padding:9px 12px;font-weight:900;cursor:pointer}.play{background:#dcfce7;color:#166534}.stop{background:#fee2e2;color:#991b1b}.day{border-radius:18px;border:1px solid var(--line);background:#fff;padding:16px}.day h3{display:flex;justify-content:space-between;gap:10px;align-items:center}.time{font-size:.8rem;background:#eef2ff;color:#3730a3;padding:5px 9px;border-radius:999px;font-weight:900}.checklist li{margin:.45rem 0}.taskboard-wrap{overflow:auto}.taskboard{width:100%;border-collapse:separate;border-spacing:0;min-width:760px;border:1px solid var(--line);border-radius:20px;overflow:hidden;background:#fff}.taskboard th{background:#111827;color:#fff;padding:12px}.taskboard td{padding:12px;border-top:1px solid var(--line);text-align:center;font-weight:800}.taskboard .left{text-align:left}.taskboard tr:nth-child(even) td{background:#f8fafc}.tag{display:inline-block;border-radius:999px;padding:5px 8px;color:#fff;font-size:.78rem}.teacher{background:#ef4444}.reading{background:#2563eb}.epic{background:#7c3aed}.spelling{background:#16a34a}.phonics{background:#ea580c}.audio-box{background:#f0f9ff;border:1px solid #bae6fd;border-radius:18px;padding:14px;margin-top:12px}.findbox{display:flex;gap:10px;flex-wrap:wrap}.findbox input{flex:1;min-width:240px;padding:14px 16px;border-radius:18px;border:1px solid var(--line);font-size:1rem}.result{font-weight:900;margin-top:10px}.footer{font-size:.9rem;color:var(--muted);text-align:center;margin:30px 0}.confetti{position:absolute;font-size:4rem;opacity:.15;animation:float 8s ease-in-out infinite}.c1{top:18px;left:8%}.c2{top:70px;right:10%;animation-delay:1s}.c3{bottom:0;left:20%;animation-delay:2s}@keyframes float{0%,100%{transform:translateY(0) rotate(0)}50%{transform:translateY(-18px) rotate(8deg)}}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="confetti c1">📚</div><div class="confetti c2">✨</div><div class="confetti c3">🚀</div>
+    <div class="badge">ROOM 5 • WEEK 9 • READING</div>
+    <h1>Optimistic: Connecting Through Storytelling</h1>
+    <p class="sub">This week we are reading carefully, using evidence, and explaining how stories help us understand people, history, courage, connection and identity.</p>
+    <div class="top-actions">
+      <a class="btn b-purple" href="#taskboard">🗓️ Taskboard</a>
+      <a class="btn b-green" href="#groups">📖 Reading Groups</a>
+      <a class="btn b-blue" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">🎞️ Google Classroom Slides</a>
+      <a class="btn b-orange" href="#finishers">⚡ Early Finishers</a>
+      <button class="btn b-dark" onclick="stopReading()">⏹ Stop Read-To-Me</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="panel notice" id="room5-mission">
+      <b>Room 5 reading mission:</b> Find your group, open your links, follow the steps, and complete your reading task independently. Groups 2–5: use the Google Classroom button for your slide task. Group 1: your books and printed sheets are loaded below.
+      <div class="readbar"><button class="mini play" onclick="speakElement('room5-mission')">▶ Read this</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div>
+    </section>
+<section class="panel" id="taskboard">
+      <h2>🗓️ Week 9 Reading Taskboard</h2>
+      <p class="small">Tuesday = 1 period • Wednesday = 1 period • Thursday = double lesson • Friday = 1 period</p>
+      <div class="taskboard-wrap">
+        <table class="taskboard" aria-label="Week 9 reading taskboard">
+          <thead><tr><th>Group</th><th>Tuesday</th><th>Wednesday</th><th>Thursday Double</th><th>Friday</th><th>Early Finish</th></tr></thead>
+          <tbody>
+            <tr><td class="left"><b>Group 1</b><br>Sione, Kalala, Aaleyah, Robert</td><td><span class="tag teacher">Teacher</span></td><td><span class="tag reading">Sunshine Online</span></td><td><span class="tag teacher">Teacher</span></td><td><span class="tag epic">Epic Reading</span></td><td><span class="tag phonics">Phonics</span></td></tr>
+            <tr><td class="left"><b>Group 2</b><br>Antonio, Boston, Beaver, Ariellyn, Joe, Taira</td><td><span class="tag teacher">Teacher</span></td><td><span class="tag reading">Kuri</span></td><td><span class="tag reading">First World War Mascots</span></td><td><span class="tag teacher">Teacher</span></td><td><span class="tag spelling">Spelling</span></td></tr>
+            <tr><td class="left"><b>Group 3</b><br>Ramona, Richard, Conellius, Fusi, Nare, Natalia, James, Jett, Te Haina, Matthew</td><td><span class="tag reading">Tupaia</span></td><td><span class="tag teacher">Teacher</span></td><td><span class="tag teacher">New Zealand at War</span></td><td><span class="tag reading">Reading</span></td><td><span class="tag spelling">Spelling</span></td></tr>
+            <tr><td class="left"><b>Group 4</b><br>Amaia, Luther, Limani, Zach</td><td><span class="tag reading">Captain Cook</span></td><td><span class="tag teacher">Teacher</span></td><td><span class="tag reading">King and Country</span></td><td><span class="tag teacher">Teacher</span></td><td><span class="tag spelling">Spelling</span></td></tr>
+            <tr><td class="left"><b>Group 5</b><br>Alenna, Taofi, Khan, Dante</td><td><span class="tag reading">Brave</span></td><td><span class="tag teacher">Teacher</span></td><td><span class="tag teacher">Crabs</span></td><td><span class="tag reading">Reading</span></td><td><span class="tag spelling">Spelling</span></td></tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="readbar"><button class="mini play" onclick="speakElement('taskboard')">▶ Read taskboard instructions</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div>
+    </section>
+
+    <section class="panel notice" id="classroom-slides">
+      <h2>🎞️ Groups 2–5 Google Classroom Slides</h2>
+      <p class="small"><b>Groups 2, 3, 4 and 5:</b> click this button to open the reading task/slides in Google Classroom. Use this if your group card button does not open.</p>
+      <div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Google Classroom Reading Slides</a></div>
+      <div class="readbar"><button class="mini play" onclick="speakElement('classroom-slides')">▶ Read this</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div>
+    </section>
+
+    <section class="panel">
+      <h2>✅ Book Expectations for Every Reading Task</h2>
+      <div class="grid two">
+        <div class="day" id="book-expectations"><ol class="checklist"><li>Write the full date and title.</li><li>Underline the date and title neatly with a ruler.</li><li>Before reading, write a prediction: <b>I think this text will be about… because…</b></li><li>Write 5 unfamiliar or interesting vocabulary words.</li><li>Copy each question first.</li><li>Answer underneath in full sentences.</li><li>Use evidence from the text where you can.</li></ol><div class="readbar"><button class="mini play" onclick="speakElement('book-expectations')">▶ Read expectations</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div></div>
+        <div class="day"><h3>🧠 Sentence Starters</h3><ul class="checklist"><li><b>I predict… because…</b></li><li><b>The character felt… because…</b></li><li><b>One piece of evidence is…</b></li><li><b>This shows…</b></li><li><b>This reminds me of… because…</b></li></ul></div>
+      </div>
+    </section>
+
+    <section class="panel" id="groups">
+      <h2>📖 Reading Groups and Links</h2>
+      <div class="grid two">
+
+        <article class="group-card" id="group1"><div class="group-head g1"><h3>Group 1</h3><span class="pill">Teacher / Kākano</span></div><div class="group-body"><div class="names"><span class="name">Sione</span><span class="name">Kalala</span><span class="name">Aaleyah</span><span class="name">Robert</span></div><div class="task"><strong>Focus:</strong> Practise your sounds, track each word, read with the teacher, and complete your printed Kākano sheet.</div><div class="task"><strong>This week’s Group 1 books</strong><ul><li>Read with the teacher when your group is called.</li><li>Your teacher will tell you which book to read: <b>The Pin Tin</b>, <b>Pip and Tom</b>, or <b>Dot to Dot</b>.</li><li>After reading, complete your printed sheet carefully.</li></ul><div class="links"><a class="linkchip" href="The-Pin-Tin-text.pdf" target="_blank">Open The Pin Tin</a><a class="linkchip" href="Pip-and-Tom-text.pdf" target="_blank">Open Pip and Tom</a><a class="linkchip" href="Dot-to-Dot-text-.pdf" target="_blank">Open Dot to Dot</a><a class="linkchip" href="Kakano Home Learning - Kakano 2 (2).pdf" target="_blank">Open Printed Kākano Sheets</a></div></div><div class="task"><strong>After reading with the teacher</strong><ul><li>Complete your printed sheet.</li><li>Check your name is on your sheet.</li><li>Finish your sounds, words, drawing, and sentence activity.</li><li>Put your sheet in the right place or show Mrs Mohi.</li><li>Then choose Sunshine Online, Epic, or a phonics game.</li></ul><div class="links"><a class="linkchip" href="https://www.sunshineonline.co.nz/" target="_blank">Sunshine Online</a><a class="linkchip" href="https://www.getepic.com/" target="_blank">Epic Reading</a><a class="linkchip" href="https://www.phonicsbloom.com/" target="_blank">Phonics Bloom</a><a class="linkchip" href="https://www.phonicsplay.co.uk/resources" target="_blank">Phonics Play</a><a class="linkchip" href="https://www.roythezebra.com/reading-games.html" target="_blank">Roy the Zebra</a></div></div><div class="readbar"><button class="mini play" onclick="speakElement('group1')">▶ Read Group 1</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div></div></article>
+
+        <article class="group-card" id="group2"><div class="group-head g2"><h3>Group 2</h3><span class="pill">Level 2</span></div><div class="group-body"><div class="names"><span class="name">Antonio</span><span class="name">Boston</span><span class="name">Beaver</span><span class="name">Ariellyn</span><span class="name">Joe</span><span class="name">Taira</span></div><div class="task"><strong>Tuesday/Wednesday Reading: Kuri</strong><ul><li>Make a prediction from the title and image.</li><li>Read about Polynesian settlers and the important role kuri had.</li><li>Write 5 unfamiliar words and answer your questions in full sentences.</li></ul><div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Kuri Task on Google Classroom</a></div></div><div class="task"><strong>Thursday/Friday Reading: First World War Mascots</strong><ul><li>Think about what mascots are and how animals helped soldiers.</li><li>Answer questions in full sentences.</li><li>Underline one piece of evidence from the text.</li></ul><div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Mascots Task on Google Classroom</a></div></div><div class="readbar"><button class="mini play" onclick="speakElement('group2')">▶ Read Group 2</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div></div></article>
+
+        <article class="group-card" id="group3"><div class="group-head g3"><h3>Group 3</h3><span class="pill">Level 3</span></div><div class="group-body"><div class="names"><span class="name">Ramona</span><span class="name">Richard</span><span class="name">Conellius</span><span class="name">Fusi</span><span class="name">Nare</span><span class="name">Natalia</span><span class="name">James</span><span class="name">Jett</span><span class="name">Te Haina</span><span class="name">Matthew</span></div><div class="task"><strong>Tuesday/Wednesday Reading: Tupaia</strong><ul><li>Think about Pacific voyagers and navigation.</li><li>Find key facts about Tupaia and how he helped communication.</li><li>Use evidence to explain your ideas.</li></ul><div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Tupaia Task on Google Classroom</a></div></div><div class="task"><strong>Thursday/Friday Reading: New Zealand at War</strong><ul><li>Locate key events about New Zealand during the First World War.</li><li>Explain how people may have felt.</li><li>Complete your summary and evidence task.</li></ul><div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open New Zealand at War Task on Google Classroom</a></div></div><div class="readbar"><button class="mini play" onclick="speakElement('group3')">▶ Read Group 3</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div></div></article>
+
+        <article class="group-card" id="group4"><div class="group-head g4"><h3>Group 4</h3><span class="pill">Level 4</span></div><div class="group-body"><div class="names"><span class="name">Amaia</span><span class="name">Luther</span><span class="name">Limani</span><span class="name">Zach</span></div><div class="task"><strong>Tuesday/Wednesday Reading: Captain Cook — Charting our Coast</strong><ul><li>Think about Captain Cook and why people wanted better world maps.</li><li>Identify challenges faced on the journey.</li><li>Use evidence to explain what the text shows.</li></ul><div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Captain Cook Task on Google Classroom</a></div></div><div class="task"><strong>Thursday/Friday Reading: King and Country</strong><ul><li>Read about Jean Batten and her aviation journey.</li><li>Explain the challenges and dangers she faced.</li><li>Make a connection between courage, challenge, and determination.</li></ul><div class="links"><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open King and Country Task on Google Classroom</a></div></div><div class="readbar"><button class="mini play" onclick="speakElement('group4')">▶ Read Group 4</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div></div></article>
+
+        <article class="group-card" id="group5"><div class="group-head g5"><h3>Group 5</h3><span class="pill">Year 7/8</span></div><div class="group-body"><div class="names"><span class="name">Alenna</span><span class="name">Taofi</span><span class="name">Khan</span><span class="name">Dante</span></div><div class="task"><strong>Tuesday/Wednesday Reading: Brave</strong><ul><li>Make a prediction from the title and first picture.</li><li>Read about Whina Cooper’s school days.</li><li>Think about bravery, identity, connection, and change.</li></ul><div class="links"><a class="linkchip" href="Brave-text(1).pdf">Open Brave Text</a><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Brave Task on Google Classroom</a></div></div><div class="task"><strong>Thursday/Friday Reading: Crabs</strong><ul><li>Read about Dev and how he feels while his father is away.</li><li>Track how Dev changes through the story.</li><li>Use the audio if you need help following the text.</li></ul><div class="links"><a class="linkchip" href="Crabs-text(1).pdf">Open Crabs Text</a><a class="linkchip" href="https://classroom.google.com/c/ODQ0NTY3MzM2Mzc1/m/ODU1MTM4NDc5MTgw/details" target="_blank">Open Crabs Task on Google Classroom</a><a class="linkchip" href="Crabs.mp3">Open Crabs Audio</a></div><div class="audio-box"><b>Crabs Audio:</b><br><audio controls preload="none" src="Crabs.mp3" style="width:100%;margin-top:8px"></audio></div></div><div class="readbar"><button class="mini play" onclick="speakElement('group5')">▶ Read Group 5</button><button class="mini stop" onclick="stopReading()">■ Stop</button></div></div></article>
+      </div>
+    </section>
+
+    <section class="panel" id="daily">
+      <h2>🧭 Daily Mission Steps</h2>
+      <div class="grid two">
+        <div class="day" id="tuesday"><h3>Tuesday <span class="time">1 period</span></h3><p>Open your first text/task. Write your date and title, make a prediction, list vocabulary, and begin reading with focus.</p><div class="readbar"><button class="mini play" onclick="speakElement('tuesday')">▶ Read Tuesday</button></div></div>
+        <div class="day" id="wednesday"><h3>Wednesday <span class="time">1 period</span></h3><p>Continue your first text/task. Copy each question first, answer in full sentences, and underline one piece of evidence.</p><div class="readbar"><button class="mini play" onclick="speakElement('wednesday')">▶ Read Wednesday</button></div></div>
+        <div class="day" id="thursday"><h3>Thursday <span class="time">double lesson</span></h3><p>Start your second text/task. Use your group link, read carefully, answer questions, and check the instructions before asking for help.</p><div class="readbar"><button class="mini play" onclick="speakElement('thursday')">▶ Read Thursday</button></div></div>
+        <div class="day" id="friday"><h3>Friday <span class="time">1 period</span></h3><p>Finish all reading questions. Write a 4-sentence summary and complete a neat boxed visual sketch of an important moment from your text.</p><div class="readbar"><button class="mini play" onclick="speakElement('friday')">▶ Read Friday</button></div></div>
+      </div>
+    </section>
+
+    <section class="panel" id="finishers">
+      <h2>⚡ Early Finishers</h2>
+      <p class="small">Finished? Check your work first. Then choose one early finisher activity.</p>
+      <div class="links"><a class="linkchip" href="https://www.getepic.com/" target="_blank">Epic Reading</a><a class="linkchip" href="https://www.overdrive.com/apps/libby" target="_blank">Libby</a><a class="linkchip" href="https://www.roythezebra.com/reading-games.html" target="_blank">Roy the Zebra Reading</a><a class="linkchip" href="https://www.phonicsplay.co.uk/resources" target="_blank">Phonics Play</a><a class="linkchip" href="https://www.blooket.com/" target="_blank">Blooket</a></div>
+    </section>
+
+    <p class="footer">Room 5 • Be independent • Be kind • Use evidence • Keep your book beautiful ✨</p>
+  </main>
+
+<script>
+function cleanText(t){ return t.replace(/▶|■|🔎|🗓️|📖|✅|🧠|🧭|⚡|✨|🚀|📚/g,'').replace(/\s+/g,' ').trim(); }
+function speakText(text){ stopReading(); const u = new SpeechSynthesisUtterance(cleanText(text)); u.rate=.88; u.pitch=1; u.lang='en-NZ'; speechSynthesis.speak(u); }
+function speakElement(id){ const el=document.getElementById(id); if(el) speakText(el.innerText); }
+function stopReading(){ if('speechSynthesis' in window) speechSynthesis.cancel(); }
+window.addEventListener('beforeunload', stopReading);
+</script>
+</body>
+</html>
